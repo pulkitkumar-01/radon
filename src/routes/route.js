@@ -1,40 +1,93 @@
 const express = require('express');
-const myHelper = require('../util/helper')
-const underscore = require('underscore')
+
+const lodash = require('lodash')
 
 const router = express.Router();
 
-router.get('/test-me', function (req, res) {
-    myHelper.printDate()
-    myHelper.getCurrentMonth()
-    myHelper.getCohortData()
-    let firstElement = underscore.first(['Sabiha','Akash','Pritesh'])
-    console.log('The first element received from underscope function is '+firstElement)
-    res.send('My first ever api!')
-});
+
+// GET API ASSIGNMENT ONLY
 
 router.get('/hello', function (req, res) {
-   
-    res.send('Hello there!')
+    let i = ['January','February', 'March', 'April', 'May','June', 'July', 'August', 'September', 'October', 'November', 'December']
+    console.log(lodash.chunk(i,3))
+
+    let a = [1, 3, 5, 7, 9, 11, 13, 15, 17, 19]
+     console.log(lodash.tail(a))
+
+     let b = lodash.union([1,2], [2,3], [4,5,6], [6,7], [7,8,9,10])
+      
+     console.log(b)
+
+     const pair = [["horror", "The Shining"], 
+     ["drama","Titanic"],
+     ["thriller","Shutter Island"],
+     ["fantasy","Pans Labyrinth"]]
+
+     let object = lodash.fromPairs(pair)
+
+     console.log(object)
+
+       res.send('Hello there!, This is lodash package')
 });
 
-router.get('/candidates', function(req, res){
-    console.log('Query paramters for this request are '+JSON.stringify(req.query))
-    let gender = req.query.gender
-    let state = req.query.state
-    let district = req.query.district
-    console.log('State is '+state)
-    console.log('Gender is '+gender)
-    console.log('District is '+district)
-    let candidates = ['Akash','Suman']
-    res.send(candidates)
-})
 
-router.get('/candidates/:canidatesName', function(req, res){
-    console.log('The request objects is '+ JSON.stringify(req.params))
-    console.log('Candidates name is '+req.params.canidatesName)
-    res.send('Done')
-})
+router.get('/movies', function (req, res) {
+
+    let movie = ["Stranger Things", "Inception", "Tenet", "Tumbaad", "KGF"]
+    res.send(movie)
+});
+
+router.get('/movies/:indexNumber', function (req, res) {
+
+    let movie = ["Stranger Things", "Inception", "Tenet", "Tumbaad", "KGF"]
+    res.send(movie[req.params.indexNumber] || "Please use valid index")
+});
+
+router.get('/films', function (req, res) {
+
+    let movie = [
+        {
+            "id": 1,
+            "name": "Stranger Things"
+        }, {
+            "id": 2,
+            "name": "Inception"
+        }, {
+            "id": 3,
+            "name": "Tenet"
+        }, {
+            "id": 4,
+            "name":  "Tumbaad"
+        }, {
+            "id": 5,
+            "name":  "KGF"
+        } ]
+        
+    res.send(movie)
+});
+
+router.get('/films/:filmid', function (req, res) {
+
+    let movie = [
+        {
+            "id": 1,
+            "name": "Stranger Things"
+        }, {
+            "id": 2,
+            "name": "Inception"
+        }, {
+            "id": 3,
+            "name": "Tenet"
+        }, {
+            "id": 4,
+            "name":  "Tumbaad"
+        }, {
+            "id": 5,
+            "name":  "KGF"
+        } ]
+        
+    res.send(movie.find(ele => ele.id == req.params.filmid) || "No movie exists with this id")
+});
 
 
 module.exports = router;
